@@ -1,0 +1,148 @@
+/* TASK 2 HOTEL BOOKING SYSTEM*/ -- Jahnavi
+
+/Create and Use the Database/
+CREATE DATABASE HotelBooking_DB;
+USE HotelBooking_DB;
+
+/Create Rooms Table/
+CREATE TABLE Rooms (
+    room_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_number VARCHAR(10) NOT NULL UNIQUE,
+    room_type VARCHAR(50) NOT NULL,
+    capacity INT NOT NULL,
+    price_per_night DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(20) NOT NULL
+);
+
+/Create Customers Table/
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone_number VARCHAR(15) NOT NULL,
+    address VARCHAR(255)
+);
+
+/Create Rreservations Table/
+CREATE TABLE Reservations (
+    reservation_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    reservation_date DATE NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+/Create Payments Table/
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    reservation_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_date DATE NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    FOREIGN KEY (reservation_id) REFERENCES Reservations(reservation_id)
+);
+---I have created 4 tables now lets insert the data
+
+/Insert Data into Rooms Table/
+INSERT INTO Rooms (room_number, room_type, capacity, price_per_night, status)
+VALUES 
+('101', 'Single', 1, 100.00, 'Available'),
+('102', 'Double', 2, 150.00, 'Available'),
+('103', 'Suite', 4, 300.00, 'Available'),
+('104', 'Single', 1, 100.00, 'Booked'),
+('105', 'Double', 2, 150.00, 'Available'),
+('106', 'Suite', 4, 300.00, 'Booked'),
+('107', 'Single', 1, 100.00, 'Available'),
+('108', 'Double', 2, 150.00, 'Available'),
+('109', 'Suite', 4, 300.00, 'Booked'),
+('110', 'Single', 1, 100.00, 'Available');
+
+/* lets check wheather data got inserted or not*/
+
+select * from Rooms; 
+
+/*-----10 records got insereted
+Lets insert the data for the remaining tables aswell
+*/
+
+/Insert Data into Customers Table/
+INSERT INTO Customers (first_name, last_name, email, phone_number, address)
+VALUES 
+('Amit', 'Sharma', 'amit.sharma@example.com', '9123456789', '12 Ashok Nagar, Delhi'),
+('Priya', 'Patel', 'priya.patel@example.com', '9823456789', '45 Nehru Road, Mumbai'),
+('Rahul', 'Reddy', 'rahul.reddy@example.com', '9345678901', '78 Gandhi Nagar, Hyderabad'),
+('Sneha', 'Singh', 'sneha.singh@example.com', '9456789012', '56 MG Road, Bangalore'),
+('Ravi', 'Verma', 'ravi.verma@example.com', '9567890123', '34 Rajpath, Jaipur'),
+('Anjali', 'Gupta', 'anjali.gupta@example.com', '9678901234', '23 Connaught Place, Delhi'),
+('Vijay', 'Kumar', 'vijay.kumar@example.com', '9789012345', '88 Electronic City, Bangalore'),
+('Megha', 'Jain', 'megha.jain@example.com', '9890123456', '101 Banjara Hills, Hyderabad'),
+('Kunal', 'Desai', 'kunal.desai@example.com', '9901234567', '77 Juhu Beach, Mumbai'),
+('Riya', 'Chopra', 'riya.chopra@example.com', '9912345678', '10 Anna Nagar, Chennai');
+
+select * from Customers;
+
+/Insert Data into Reservations Table/
+INSERT INTO Reservations (room_id, customer_id, check_in_date, check_out_date, total_price, reservation_date, status)
+VALUES 
+(1, 1, '2024-08-01', '2024-08-05', 400.00, '2024-07-20', 'Confirmed'),
+(2, 2, '2024-08-10', '2024-08-15', 750.00, '2024-07-21', 'Confirmed'),
+(3, 3, '2024-08-05', '2024-08-10', 1500.00, '2024-07-22', 'Checked In'),
+(4, 4, '2024-08-08', '2024-08-12', 400.00, '2024-07-23', 'Cancelled'),
+(5, 5, '2024-08-12', '2024-08-14', 300.00, '2024-07-24', 'Confirmed'),
+(6, 6, '2024-08-03', '2024-08-07', 1200.00, '2024-07-25', 'Checked In'),
+(7, 7, '2024-08-11', '2024-08-16', 500.00, '2024-07-26', 'Confirmed'),
+(8, 8, '2024-08-06', '2024-08-10', 600.00, '2024-07-27', 'Checked Out'),
+(9, 9, '2024-08-09', '2024-08-13', 1200.00, '2024-07-28', 'Confirmed'),
+(10, 10, '2024-08-07', '2024-08-10', 300.00, '2024-07-29', 'Confirmed');
+
+select * from Reservations;
+
+/Insert Data into Payments Table/
+INSERT INTO Payments (reservation_id, amount, payment_date, payment_method)
+VALUES 
+(1, 400.00, '2024-07-21', 'Credit Card'),
+(2, 750.00, '2024-07-22', 'Credit Card'),
+(3, 1500.00, '2024-07-23', 'Debit Card'),
+(4, 400.00, '2024-07-24', 'Credit Card'),
+(5, 300.00, '2024-07-25', 'Cash'),
+(6, 1200.00, '2024-07-26', 'Credit Card'),
+(7, 500.00, '2024-07-27', 'Credit Card'),
+(8, 600.00, '2024-07-28', 'Credit Card'),
+(9, 1200.00, '2024-07-29', 'Debit Card'),
+(10, 300.00, '2024-07-30', 'Credit Card');
+
+select * from Payments;
+/* data got enetered correctly*/
+
+/Get All Available Rooms/
+SELECT * FROM Rooms WHERE status = 'Available';
+
+/Find All Reservations for a Specific Customer/
+SELECT r.*, c.first_name, c.last_name 
+FROM Reservations r
+JOIN Customers c ON r.customer_id = c.customer_id
+WHERE c.customer_id = 7; -- Replace with the desired customer_id
+
+/Calculate Total Revenue from Reservations/
+SELECT SUM(total_price) AS TotalRevenue FROM Reservations;
+
+/List All Customers with Their Total Spend/
+SELECT c.customer_id, c.first_name, c.last_name, SUM(r.total_price) AS TotalSpend
+FROM Customers c
+JOIN Reservations r ON c.customer_id = r.customer_id
+GROUP BY c.customer_id, c.first_name, c.last_name;
+
+/Check Room Availability for a Given Date Range/
+SELECT r.room_id, r.room_number, r.room_type
+FROM Rooms r
+WHERE r.status = 'Available' AND r.room_id NOT IN (
+    SELECT res.room_id
+    FROM Reservations res
+    WHERE (res.check_in_date <= '2023-08-10' AND res.check_out_date >= '2024-08-05') -- Replace with desired date range
+);
