@@ -1,0 +1,108 @@
+/* TASK 1. STUDENT DATABASE MANAGEMENT*/ /--Jahnavi/
+
+/Create and Use the Database/
+CREATE DATABASE Student_DB;
+USE Student_DB;
+
+/Create Students Table/
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    date_of_birth DATE,
+    email VARCHAR(100)
+);
+
+/* Create Courses Table*/
+CREATE TABLE Courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(100),
+    course_description TEXT,
+    credits INT
+);
+
+/Create Enrollments Table/
+CREATE TABLE Enrollments (
+    enrollment_id INT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    grade CHAR(2),
+    FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+
+/Insert Data into Students Table/
+INSERT INTO Students (student_id, first_name, last_name, date_of_birth, email)
+VALUES 
+(1, 'Arjun', 'Mehta', '2001-02-15', 'arjun.mehta@example.com'),
+(2, 'Neha', 'Kaur', '2002-03-22', 'neha.kaur@example.com'),
+(3, 'Vikram', 'Nair', '2000-05-10', 'vikram.nair@example.com'),
+(4, 'Isha', 'Patel', '2001-07-18', 'isha.patel@example.com'),
+(5, 'Manoj', 'Singh', '2002-08-30', 'manoj.singh@example.com'),
+(6, 'Kritika', 'Sharma', '2000-10-12', 'kritika.sharma@example.com'),
+(7, 'Sanjay', 'Joshi', '2001-11-23', 'sanjay.joshi@example.com'),
+(8, 'Aarti', 'Sharma', '2002-01-14', 'aarti.sharma@example.com'),
+(9, 'Rohan', 'Gupta', '2000-04-09', 'rohan.gupta@example.com'),
+(10, 'Swati', 'Deshmukh', '2001-06-21', 'swati.deshmukh@example.com');
+
+/* Lets check wheather data is inserted or not into the student table*/
+select * from Students; /* Data got Inserted*/
+
+/Insert Data into Courses Table/
+INSERT INTO Courses (course_id, course_name, course_description, credits)
+VALUES 
+(1, 'Database Systems', 'Introduction to database systems', 4),
+(2, 'Data Structures', 'Study of data structures and algorithms', 3),
+(3, 'Operating Systems', 'Concepts of operating systems', 4),
+(4, 'Computer Networks', 'Principles of computer networks', 3),
+(5, 'Software Engineering', 'Software development methodologies', 4),
+(6, 'Artificial Intelligence', 'Introduction to AI concepts and techniques', 3),
+(7, 'Machine Learning', 'Fundamentals of machine learning', 4),
+(8, 'Web Development', 'Development of web applications', 3),
+(9, 'Cybersecurity', 'Principles of cybersecurity', 3),
+(10, 'Cloud Computing', 'Cloud computing technologies and services', 4);
+
+select * from Courses;
+
+/Insert Data into Enrollments Table/
+INSERT INTO Enrollments (enrollment_id, student_id, course_id, grade)
+VALUES 
+(1, 1, 1, 'A'),
+(2, 1, 3, 'B+'),
+(3, 2, 2, 'A-'),
+(4, 2, 4, 'B'),
+(5, 3, 1, 'A+'),
+(6, 3, 5, 'A'),
+(7, 4, 6, 'B'),
+(8, 5, 7, 'A'),
+(9, 6, 8, 'B+'),
+(10, 7, 9, 'A-');
+
+select * from Enrollments;
+
+/Update a student's grade:/
+UPDATE Enrollments
+SET grade = 'A+'
+WHERE enrollment_id = 1;
+/* grade got chganged for the updated query*/
+
+/List all students with their enrolled courses:/
+SELECT Students.student_id, Students.first_name, Students.last_name, Courses.course_name
+FROM Students
+JOIN Enrollments ON Students.student_id = Enrollments.student_id
+JOIN Courses ON Enrollments.course_id = Courses.course_id;
+
+/Get the grades of a specific student:/
+SELECT Courses.course_name, Enrollments.grade
+FROM Students
+JOIN Enrollments ON Students.student_id = Enrollments.student_id
+JOIN Courses ON Enrollments.course_id = Courses.course_id
+WHERE Students.student_id = 1;
+
+/List all courses along with the number of students enrolled in each:/
+SELECT Courses.course_name, COUNT(Enrollments.student_id) AS student_count
+FROM Courses
+LEFT JOIN Enrollments ON Courses.course_id = Enrollments.course_id
+GROUP BY Courses.course_id;
+
+/* I ahve performed joins to show the records for the TASk 1*/
